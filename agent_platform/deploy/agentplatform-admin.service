@@ -1,0 +1,22 @@
+[Unit]
+Description=PitronAgent Admin Dashboard
+After=network.target
+
+[Service]
+Type=exec
+User=www-data
+WorkingDirectory=/opt/agentplatform/admin
+EnvironmentFile=/opt/agentplatform/.env
+ExecStart=/opt/agentplatform/venv/bin/streamlit run app.py \
+    --server.port 8502 \
+    --server.address 127.0.0.1 \
+    --server.headless true \
+    --server.enableCORS false
+Restart=on-failure
+RestartSec=5s
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=agentplatform-admin
+
+[Install]
+WantedBy=multi-user.target
