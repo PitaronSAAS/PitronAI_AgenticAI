@@ -1,17 +1,16 @@
 """FastAPI dependency injection."""
 from fastapi import Header, HTTPException, status
-from supabase import Client
 import api.db as db_module
 from api.db.supabase_client import get_db, get_tenant_cache, get_cache_lock
 
 
-def get_db_client() -> Client:
+def get_db_client():
     return get_db()
 
 
 def get_tenant(
     x_api_key: str = Header(..., alias="X-API-Key"),
-    db_client: Client = None,
+    db_client = None,
 ) -> dict:
     """Resolve and validate tenant from API key header."""
     if db_client is None:

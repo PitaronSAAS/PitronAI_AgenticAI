@@ -1,6 +1,5 @@
 import secrets
 from fastapi import APIRouter, HTTPException, Depends
-from supabase import Client
 from api.models.tenant import TenantCreate
 from api.db.supabase_client import get_db
 import api.db as db_module
@@ -8,17 +7,17 @@ import api.db as db_module
 router = APIRouter(prefix="/admin")
 
 
-def _get_db() -> Client:
+def _get_db():
     return get_db()
 
 
 @router.get("/tenants")
-def list_tenants(db_client: Client = Depends(_get_db)) -> list:
+def list_tenants(db_client = Depends(_get_db)) -> list:
     return db_module.list_tenants(db_client)
 
 
 @router.post("/tenants", status_code=201)
-def create_tenant(body: TenantCreate, db_client: Client = Depends(_get_db)) -> dict:
+def create_tenant(body: TenantCreate, db_client = Depends(_get_db)) -> dict:
     api_key = "pak_" + secrets.token_hex(24)
 
     tenant = db_module.create_tenant(db_client, {
@@ -43,6 +42,6 @@ def create_tenant(body: TenantCreate, db_client: Client = Depends(_get_db)) -> d
 
 
 @router.patch("/tenants/{tenant_id}/config")
-def update_config(tenant_id: str, body: dict, db_client: Client = Depends(_get_db)) -> dict:
+def update_config(tenant_id: str, body: dict, db_client = Depends(_get_db)) -> dict:
     # Invalidate cache for this tenant is handled by TTL expiry (max 60s lag)
     return db_module.update_agent_config(db_client, tenant_id, body)

@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends
-from supabase import Client
 from api.models.knowledge import KnowledgeCreate, KnowledgeUpdate, KnowledgeEntry
 from api.db.supabase_client import get_db
 import api.db as db_module
@@ -7,12 +6,12 @@ import api.db as db_module
 router = APIRouter(prefix="/admin")
 
 
-def _get_db() -> Client:
+def _get_db():
     return get_db()
 
 
 @router.get("/tenants/{tenant_id}/knowledge")
-def list_knowledge(tenant_id: str, db_client: Client = Depends(_get_db)) -> list:
+def list_knowledge(tenant_id: str, db_client = Depends(_get_db)) -> list:
     return db_module.list_knowledge(db_client, tenant_id)
 
 
@@ -20,7 +19,7 @@ def list_knowledge(tenant_id: str, db_client: Client = Depends(_get_db)) -> list
 def create_entry(
     tenant_id: str,
     body: KnowledgeCreate,
-    db_client: Client = Depends(_get_db),
+    db_client = Depends(_get_db),
 ) -> dict:
     data = body.model_dump()
     data["tenant_id"] = tenant_id
@@ -38,7 +37,7 @@ def update_entry(
     tenant_id: str,
     entry_id: str,
     body: KnowledgeUpdate,
-    db_client: Client = Depends(_get_db),
+    db_client = Depends(_get_db),
 ) -> dict:
     data = {k: v for k, v in body.model_dump().items() if v is not None}
     return db_module.update_knowledge_entry(db_client, entry_id, tenant_id, data)
@@ -48,6 +47,6 @@ def update_entry(
 def delete_entry(
     tenant_id: str,
     entry_id: str,
-    db_client: Client = Depends(_get_db),
+    db_client = Depends(_get_db),
 ) -> None:
     db_module.delete_knowledge_entry(db_client, entry_id, tenant_id)

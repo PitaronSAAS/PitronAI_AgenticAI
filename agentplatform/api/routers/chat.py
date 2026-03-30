@@ -1,7 +1,6 @@
 import uuid
 import logging
 from fastapi import APIRouter, Depends, Request
-from supabase import Client
 
 from api.models import ChatRequest, ChatResponse
 from api.dependencies import get_tenant, get_db_client
@@ -16,7 +15,7 @@ def chat(
     request: Request,
     body: ChatRequest,
     tenant: dict = Depends(get_tenant),
-    db_client: Client = Depends(get_db_client),
+    db_client = Depends(get_db_client),
 ) -> ChatResponse:
     request_id = str(uuid.uuid4())[:8]
 
