@@ -5,9 +5,9 @@ After=network.target
 [Service]
 Type=exec
 User=www-data
-WorkingDirectory=/opt/agentplatform/admin
-EnvironmentFile=/opt/agentplatform/.env
-ExecStart=/opt/agentplatform/venv/bin/streamlit run app.py \
+WorkingDirectory=/var/www/PitronAI_AgenticAI/agentplatform/admin
+EnvironmentFile=/var/www/PitronAI_AgenticAI/agentplatform/.env
+ExecStart=/var/www/PitronAI_AgenticAI/agentplatform/venv/bin/streamlit run app.py \
     --server.port 8502 \
     --server.address 127.0.0.1 \
     --server.headless true \
