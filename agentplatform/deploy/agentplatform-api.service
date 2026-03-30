@@ -4,10 +4,9 @@ After=network.target
 
 [Service]
 Type=exec
-User=www-data
+User=root
 WorkingDirectory=/var/www/PitronAI_AgenticAI/agentplatform
-EnvironmentFile=/var/www/PitronAI_AgenticAI/agentplatform/.env
-ExecStart=/var/www/PitronAI_AgenticAI/agentplatform/venv/bin/uvicorn api.main:app \
+ExecStart=/var/www/PitronAI_AgenticAI/agenticai_uv/.venv/bin/uvicorn api.main:app \
     --host 127.0.0.1 \
     --port 8000 \
     --workers 2 \
