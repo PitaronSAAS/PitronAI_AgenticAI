@@ -29,8 +29,9 @@ app = FastAPI(
     version="1.0.0",
     description="Multi-tenant AI agent platform for small businesses",
     lifespan=lifespan,
-    docs_url="/docs",
+    docs_url="/v1/docs",
     redoc_url=None,
+    openapi_url="/v1/openapi.json",
 )
 
 # ── CORS ──────────────────────────────────────────────────────────────────────
@@ -74,7 +75,7 @@ if os.path.isdir(_widget_dir):
 
 
 # ── Health ─────────────────────────────────────────────────────────────────────
-@app.get("/health", tags=["system"])
+@app.get("/v1/health", tags=["system"])
 def health():
     return {"status": "ok", "version": "1.0.0"}
 
